@@ -39,31 +39,31 @@ public class ChessBoardWidget extends Composite{
 		}
 		
 		for(int i = 0; i < 8; i++){
-			board2.get(i).get(0).setColor(color.BLACK);
-			board2.get(i).get(1).setColor(color.BLACK);
-			board2.get(i).get(1).setPiece(piecetype.PAWN);
-			board2.get(i).get(6).setColor(color.WHITE);
-			board2.get(i).get(7).setColor(color.WHITE);
-			board2.get(i).get(6).setPiece(piecetype.PAWN);
+			board2.get(0).get(i).setColor(color.BLACK);
+			board2.get(1).get(i).setColor(color.BLACK);
+			board2.get(1).get(i).setPiece(piecetype.PAWN);
+			board2.get(6).get(i).setColor(color.WHITE);
+			board2.get(7).get(i).setColor(color.WHITE);
+			board2.get(6).get(i).setPiece(piecetype.PAWN);
 		}
 		
 		
 		board2.get(0).get(0).setPiece(piecetype.ROOK);
-		board2.get(1).get(0).setPiece(piecetype.KNIGHT);
-		board2.get(2).get(0).setPiece(piecetype.BISHOP);
-		board2.get(3).get(0).setPiece(piecetype.QUEEN);
-		board2.get(4).get(0).setPiece(piecetype.KING);
-		board2.get(5).get(0).setPiece(piecetype.BISHOP);
-		board2.get(6).get(0).setPiece(piecetype.KNIGHT);
-		board2.get(7).get(0).setPiece(piecetype.ROOK);
-		
+		board2.get(0).get(1).setPiece(piecetype.KNIGHT);
+		board2.get(0).get(2).setPiece(piecetype.BISHOP);
+		board2.get(0).get(3).setPiece(piecetype.QUEEN);
+		board2.get(0).get(4).setPiece(piecetype.KING);
+		board2.get(0).get(5).setPiece(piecetype.BISHOP);
+		board2.get(0).get(6).setPiece(piecetype.KNIGHT);
 		board2.get(0).get(7).setPiece(piecetype.ROOK);
-		board2.get(1).get(7).setPiece(piecetype.KNIGHT);
-		board2.get(2).get(7).setPiece(piecetype.BISHOP);
-		board2.get(3).get(7).setPiece(piecetype.QUEEN);
-		board2.get(4).get(7).setPiece(piecetype.KING);
-		board2.get(5).get(7).setPiece(piecetype.BISHOP);
-		board2.get(6).get(7).setPiece(piecetype.KNIGHT);
+		
+		board2.get(7).get(0).setPiece(piecetype.ROOK);
+		board2.get(7).get(1).setPiece(piecetype.KNIGHT);
+		board2.get(7).get(2).setPiece(piecetype.BISHOP);
+		board2.get(7).get(3).setPiece(piecetype.QUEEN);
+		board2.get(7).get(4).setPiece(piecetype.KING);
+		board2.get(7).get(5).setPiece(piecetype.BISHOP);
+		board2.get(7).get(6).setPiece(piecetype.KNIGHT);
 		board2.get(7).get(7).setPiece(piecetype.ROOK);
 		
 		/*
