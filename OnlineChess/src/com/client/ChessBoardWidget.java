@@ -292,7 +292,7 @@ public class ChessBoardWidget extends Composite{
 			//lets not determine the correct move just yet
 			int targetx = i;
 			int targety = j;
-			if(!MoveValidator.validMove(clickx, clicky, targetx, targety)){
+			if(!MoveValidator.validMove(clickx, clicky, targetx, targety, board2, turn)){
 				piececlickstatus = false;
 				selectedSquareLabel.setHTML("Invalid Move");
 				return;

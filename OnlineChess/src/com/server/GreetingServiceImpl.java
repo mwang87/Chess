@@ -172,12 +172,12 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		Boolean turn = getTurn();
 		if(turn){
 			if(source.getColor() == color.BLACK){
-				validturn = MoveValidator.validMove(startx, starty, endx, endy);
+				validturn = MoveValidator.validMove(startx, starty, endx, endy, board2, turn);
 			}
 		}
 		else{
 			if(source.getColor() == color.WHITE){
-				validturn = MoveValidator.validMove(startx, starty, endx, endy);
+				validturn = MoveValidator.validMove(startx, starty, endx, endy, board2, turn);
 			}
 		}
 		
