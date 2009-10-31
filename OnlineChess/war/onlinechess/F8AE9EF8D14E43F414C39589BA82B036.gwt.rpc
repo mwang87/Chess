@@ -1,0 +1,10 @@
+com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException, true
+com.google.gwt.user.client.ui.ChangeListenerCollection, true
+com.google.gwt.user.client.ui.ClickListenerCollection, true
+com.google.gwt.user.client.ui.FocusListenerCollection, true
+com.google.gwt.user.client.ui.KeyboardListenerCollection, true
+java.lang.Exception, false
+java.lang.RuntimeException, false
+java.lang.String, true
+java.lang.Throwable, false
+java.util.ArrayList, true
