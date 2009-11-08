@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ChessBoardWidget extends Composite{
@@ -131,6 +132,48 @@ public class ChessBoardWidget extends Composite{
 		return returnval;
 	}
 	
+	public String getPieceURL(int i, int j){
+		piecetype piece = (board2.get(i).get(j)).getPiece();
+		color thecolor = (board2.get(i).get(j)).getColor();
+		
+		String returnval = "https://netfiles.uiuc.edu/dombro2/www/PIECES";
+		
+		if((i+j)%2==0){
+			returnval +="/BlackP";
+		}
+		else{
+			returnval +="/WhiteP";
+		}
+		
+		if(thecolor == color.BLACK)
+			returnval += "/B";
+		else
+			returnval += "/W"; 
+		
+		if(piece == piecetype.BISHOP)
+			returnval += "BISHOP";
+		if(piece == piecetype.EMPTY){
+			if((i+j)%2==0){
+				return "https://netfiles.uiuc.edu/dombro2/www/PIECES/BlackP/BLACK.bmp";
+			}
+			else{
+				return "https://netfiles.uiuc.edu/dombro2/www/PIECES/WhiteP/WHITE.bmp";
+			}
+		}
+		if(piece == piecetype.KING)
+			returnval += "KING";
+		if(piece == piecetype.KNIGHT)
+			returnval += "KNIGHT";
+		if(piece == piecetype.PAWN)
+			returnval += "PAWN";
+		if(piece == piecetype.QUEEN)
+			returnval += "QUEEN";
+		if(piece == piecetype.ROOK)
+			returnval += "ROOK";
+		returnval +=".BMP";
+		return returnval;
+	}
+	
 	public void UpdateBoard(){
 		Timer t = new Timer() {
 			public void run() {
@@ -146,16 +189,16 @@ public class ChessBoardWidget extends Composite{
 								BoardBox box = createBoardBox(result.get(i).get(j));
 								board2.get(i).set(j, box);
 								//Button newButton = new Button(getPieceString(j,i));
-								Button newButton = new Button(getPieceString(i,j));
-								newButton.addClickHandler(new ClickHandler() {
+								Image boardImage = new Image(getPieceURL(i,j));
+								boardImage.addClickHandler(new ClickHandler() {
 									@Override
 									public void onClick(ClickEvent event) {
 										//piececlick(tempj, tempi);
 										piececlick(tempi, tempj);
 									}
 								});
-								newButton.setSize(boxsize, boxsize);
-								flextable.setWidget(i, j, newButton);
+								boardImage.setSize(boxsize, boxsize);
+								flextable.setWidget(i, j, boardImage);
 							}
 						}
 						String serverTurn = result.get(8).get(0);
@@ -181,6 +224,8 @@ public class ChessBoardWidget extends Composite{
 		initBoard();
 		widgetVPanel = new VerticalPanel();
 		Button resetButton = new Button("New Game");
+		Image testImage = new Image("http://boobtube.files.wordpress.com/2008/07/drhorrible.jpg");
+		widgetVPanel.add(testImage);
 		resetButton.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -204,16 +249,16 @@ public class ChessBoardWidget extends Composite{
 								BoardBox box = createBoardBox(result.get(i).get(j));
 								board2.get(i).set(j, box);
 								//Button newButton = new Button(getPieceString(j,i));
-								Button newButton = new Button(getPieceString(i,j));
-								newButton.addClickHandler(new ClickHandler() {
+								Image boardImage = new Image(getPieceURL(i,j));
+								boardImage.addClickHandler(new ClickHandler() {
 									@Override
 									public void onClick(ClickEvent event) {
 										//piececlick(tempj, tempi);
 										piececlick(tempi, tempj);
 									}
 								});
-								newButton.setSize(boxsize, boxsize);
-								flextable.setWidget(i, j, newButton);
+								boardImage.setSize(boxsize, boxsize);
+								flextable.setWidget(i, j, boardImage);
 							}
 						}
 					}
@@ -232,7 +277,8 @@ public class ChessBoardWidget extends Composite{
 		for(int i = 0; i < 8; i++){
 			for(int j = 0; j < 8; j++){
 				//final Button button = new Button(getPieceString(j,i));
-				final Button button = new Button(getPieceString(i,j));
+				//final Button button = new Button(getPieceString(i,j));
+				final Image button = new Image(getPieceURL(i, j));
 				button.setSize(boxsize, boxsize);
 				final int tempi = i;
 				final int tempj = j;
@@ -345,16 +391,16 @@ public class ChessBoardWidget extends Composite{
 							BoardBox box = createBoardBox(result.get(i).get(j));
 							board2.get(i).set(j, box);
 							//Button newButton = new Button(getPieceString(j,i));
-							Button newButton = new Button(getPieceString(i,j));
-							newButton.addClickHandler(new ClickHandler() {
+							Image boardImage = new Image(getPieceURL(i,j));
+							boardImage.addClickHandler(new ClickHandler() {
 								@Override
 								public void onClick(ClickEvent event) {
 									//piececlick(tempj, tempi);
 									piececlick(tempi, tempj);
 								}
 							});
-							newButton.setSize(boxsize, boxsize);
-							flextable.setWidget(i, j, newButton);
+							boardImage.setSize(boxsize, boxsize);
+							flextable.setWidget(i, j, boardImage);
 						}
 					}
 				}
