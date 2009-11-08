@@ -186,6 +186,7 @@ public class ChessBoardWidget extends Composite{
 			@Override
 			public void onClick(ClickEvent event) {
 				selectedSquareLabel.setHTML("");
+				moveListTable.clear();
 				greetingService.resetBoard(new AsyncCallback<ArrayList<ArrayList<String>>>() {
 
 					@Override

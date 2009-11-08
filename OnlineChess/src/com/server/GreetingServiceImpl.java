@@ -151,6 +151,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		
 		saveBoard(board2);
 		setTurn(false);
+		ArrayList<String> moveList = new ArrayList<String>();
+		putCached(MoveListKey, moveList);
 		ArrayList<ArrayList<String>> returnVal = getSerializedBoard(board2);
 		
 		ArrayList<String> additionalParams = new ArrayList<String>();
