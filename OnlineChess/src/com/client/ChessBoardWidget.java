@@ -28,6 +28,7 @@ public class ChessBoardWidget extends Composite{
 	FlexTable moveListTable;
 	
 	HTML selectedSquareLabel;
+	HTML TurnNotificaion;
 	ArrayList<ArrayList<BoardBox>> board2 = new ArrayList<ArrayList<BoardBox>>();
 	
 	public void initBoard(){
@@ -202,10 +203,14 @@ public class ChessBoardWidget extends Composite{
 							}
 						}
 						String serverTurn = result.get(8).get(0);
-						if(serverTurn.equals("Black"))
+						if(serverTurn.equals("Black")){
+							TurnNotificaion.setHTML(" It is Black's Turn");
 							turn = true;
-						else
+						}
+						else{
+							TurnNotificaion.setHTML(" It is White's Turn");
 							turn = false;
+						}
 						
 						ArrayList<String> moveList = result.get(9);
 						moveListTable.clear();
@@ -224,8 +229,9 @@ public class ChessBoardWidget extends Composite{
 		initBoard();
 		widgetVPanel = new VerticalPanel();
 		Button resetButton = new Button("New Game");
-		Image testImage = new Image("http://boobtube.files.wordpress.com/2008/07/drhorrible.jpg");
-		widgetVPanel.add(testImage);
+		TurnNotificaion = new HTML();
+		//Image testImage = new Image("http://boobtube.files.wordpress.com/2008/07/drhorrible.jpg");
+		//widgetVPanel.add(testImage);
 		resetButton.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -294,7 +300,10 @@ public class ChessBoardWidget extends Composite{
 		}
 		
 		//Button testButton = new Button("ming");
-		widgetVPanel.add(resetButton);
+		HorizontalPanel topPanel = new HorizontalPanel();
+		topPanel.add(resetButton);
+		topPanel.add(TurnNotificaion);
+		widgetVPanel.add(topPanel);
 		HorizontalPanel hPanel = new HorizontalPanel();
 		hPanel.add(flextable);
 		hPanel.add(moveListTable);
