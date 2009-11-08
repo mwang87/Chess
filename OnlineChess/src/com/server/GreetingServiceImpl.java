@@ -11,6 +11,9 @@ import com.client.BoardBox;
 import com.client.ChessBoardWidget;
 import com.client.GreetingService;
 import com.client.MoveValidator;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import com.client.BoardBox.color;
@@ -111,6 +114,20 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	}
 
 	public ArrayList<ArrayList<String>> resetBoard(){
+		//checking if the user is logged in
+		if(!isLoggedIn()){
+			//return back to the user that we are not logged in
+			ArrayList<ArrayList<String>> returnVal = new ArrayList<ArrayList<String>>();
+			ArrayList<String> first = new ArrayList<String>();
+			ArrayList<String> second = new ArrayList<String>();
+			first.add("Login");
+			second.add(getLoginURL());
+			returnVal.add(first);
+			returnVal.add(second);
+			return returnVal;
+		}
+		
+		
 		ArrayList<ArrayList<BoardBox>> board2 = new ArrayList<ArrayList<BoardBox>>();
 		for(int i = 0; i < 8 ; i++){
 			ArrayList<BoardBox> row = new ArrayList<BoardBox>();
@@ -168,10 +185,23 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	public ArrayList<ArrayList<String>> putMove(int startx, int starty, int endx, int endy) {
+		//checking if the user is logged in
+		if(!isLoggedIn()){
+			//return back to the user that we are not logged in
+			ArrayList<ArrayList<String>> returnVal = new ArrayList<ArrayList<String>>();
+			ArrayList<String> first = new ArrayList<String>();
+			ArrayList<String> second = new ArrayList<String>();
+			first.add("Login");
+			second.add(getLoginURL());
+			returnVal.add(first);
+			returnVal.add(second);
+			return returnVal;
+		}
+		
+		
 		
 		ArrayList<ArrayList<BoardBox>> board2 = initboard2();
 
-		
 		//BoardBox source = board2[clickx][clicky];
 		BoardBox source = board2.get(startx).get(starty);
 		//BoardBox target = board2[targetx][targety];
@@ -378,5 +408,24 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		return moveList;
 	}
 	
+	public boolean isLoggedIn(){
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		if(user == null)
+			return false;
+		return true;
+	}
+	
+	public String getUserName(){
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
+		return user.getNickname();
+	}
+	
+	public String getLoginURL(){
+		UserService userService = UserServiceFactory.getUserService();
+		String sourceURL = this.getServletContext().getContextPath();
+		return userService.createLoginURL(sourceURL);
+	}
 	
 }

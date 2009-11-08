@@ -8,6 +8,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -248,6 +249,13 @@ public class ChessBoardWidget extends Composite{
 
 					@Override
 					public void onSuccess(ArrayList<ArrayList<String>> result) {
+						//seeing if user is logged in
+						if(result.get(0).get(0).equals("Login")){
+							//we are not logged in, redirect
+							Window.Location.assign(result.get(1).get(0));
+							return;
+						}
+						
 						for(int i = 0; i < 8; i++){
 							for(int j = 0; j< 8; j++){
 								final int tempj = j;
@@ -393,6 +401,13 @@ public class ChessBoardWidget extends Composite{
 					//Window.alert("request failed");
 				}
 				public void onSuccess(ArrayList<ArrayList<String>> result) {
+					//seeing if user is logged in
+					if(result.get(0).get(0).equals("Login")){
+						//we are not logged in, redirect
+						Window.Location.assign(result.get(1).get(0));
+						return;
+					}
+					
 					for(int i = 0; i < 8; i++){
 						for(int j = 0; j< 8; j++){
 							final int tempj = j;
@@ -449,6 +464,7 @@ public class ChessBoardWidget extends Composite{
 		
 		return new BoardBox(type, myColor);
 	}
+	
 	
 	
 }
