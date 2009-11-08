@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -28,7 +29,7 @@ public class ChessBoardWidget extends Composite{
 	.create(GreetingService.class);
 	VerticalPanel widgetVPanel;
 	FlexTable flextable;
-	FlexTable moveListTable;
+	Grid moveListTable;
 	
 	HTML selectedSquareLabel;
 	HTML TurnNotificaion;
@@ -217,7 +218,9 @@ public class ChessBoardWidget extends Composite{
 						
 						ArrayList<String> moveList = result.get(9);
 						ArrayList<String> moveListUser = result.get(10);
-						moveListTable.clear();
+						if(moveListTable.getRowCount() == moveList.size())
+							return;
+						moveListTable.resize(moveList.size(), 1);
 						for(int i = 0 ; i < moveList.size(); i++){
 							HTML text = new HTML(moveList.get(i));
 							text.setTitle("By "+moveListUser.get(i));
@@ -306,7 +309,7 @@ public class ChessBoardWidget extends Composite{
 		
 		
 		flextable = new FlexTable();
-		moveListTable = new FlexTable();
+		moveListTable = new Grid();
 		//creating buttons for each table
 		for(int i = 0; i < 8; i++){
 			for(int j = 0; j < 8; j++){
