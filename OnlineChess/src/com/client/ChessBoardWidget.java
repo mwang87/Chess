@@ -179,6 +179,7 @@ public class ChessBoardWidget extends Composite{
 			
 			@Override
 			public void onClick(ClickEvent event) {
+				selectedSquareLabel.setHTML("");
 				greetingService.resetBoard(new AsyncCallback<ArrayList<ArrayList<String>>>() {
 
 					@Override
@@ -216,8 +217,7 @@ public class ChessBoardWidget extends Composite{
 		selectedSquareLabel = new HTML();
 		
 		
-		widgetVPanel.add(resetButton);
-		widgetVPanel.add(selectedSquareLabel);
+		
 		
 		flextable = new FlexTable();
 		
@@ -241,7 +241,9 @@ public class ChessBoardWidget extends Composite{
 		}
 		
 		//Button testButton = new Button("ming");
+		widgetVPanel.add(resetButton);
 		widgetVPanel.add(flextable);
+		widgetVPanel.add(selectedSquareLabel);
 		
 		initWidget(widgetVPanel);
 		UpdateBoard();
@@ -269,7 +271,8 @@ public class ChessBoardWidget extends Composite{
 				
 				//Window.alert("You have clicked a white piece");
 				piececlickstatus = true;
-				selectedSquareLabel.setHTML("You have selected black "+clickx+" "+clicky);
+				String startLocationString = getBoardBoxString(clickx, clicky);
+				selectedSquareLabel.setHTML("You have selected black "+startLocationString);
 				
 			}
 			else{
@@ -281,8 +284,9 @@ public class ChessBoardWidget extends Composite{
 				}
 				
 				//Window.alert("You have clicked a white piece");
-				piececlickstatus = true;			
-				selectedSquareLabel.setHTML("You have selected white "+clickx+" "+clicky);
+				piececlickstatus = true;		
+				String startLocationString = getBoardBoxString(clickx, clicky);
+				selectedSquareLabel.setHTML("You have selected white "+startLocationString);
 			}
 		}
 		else{
@@ -313,7 +317,9 @@ public class ChessBoardWidget extends Composite{
 			oldButton.setSize("50px", "50px");
 			flextable.setWidget(clicky, clickx, oldButton);*/
 			piececlickstatus = false;
-			selectedSquareLabel.setHTML("You have moved");
+			String destinationString = getBoardBoxString(targetx, targety);
+			String pieceString = getPieceString(clickx, clicky);
+			selectedSquareLabel.setHTML("You have moved: "+pieceString + " to " + destinationString);
 			turn = !turn;
 			
 			greetingService.greetServer(clickx, clicky, targetx, targety, new AsyncCallback<ArrayList<ArrayList<String>>>() {
@@ -340,14 +346,17 @@ public class ChessBoardWidget extends Composite{
 							flextable.setWidget(i, j, newButton);
 						}
 					}
-
 				}
 			});
-
-			
 		}
 	}
-	
+	public String getBoardBoxString(int x, int y){
+		char y_index = 'a';
+		y_index += y;
+		x = 8 - x;
+		String output = y_index+Integer.toString(x);
+		return output;
+	}
 	
 	public BoardBox createBoardBox(String input){
 		if(input.length() == 0)

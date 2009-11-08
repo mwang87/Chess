@@ -145,7 +145,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		board2.get(7).get(7).setPiece(piecetype.ROOK);
 		
 		saveBoard(board2);
-		
+		setTurn(false);
 		ArrayList<ArrayList<String>> returnVal = getSerializedBoard(board2);
 		
 		ArrayList<String> additionalParams = new ArrayList<String>();
