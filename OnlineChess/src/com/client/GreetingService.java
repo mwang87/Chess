@@ -10,7 +10,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("greet")
 public interface GreetingService extends RemoteService {
-	ArrayList<ArrayList<String>> greetServer(int startx, int starty, int endx, int endy);
+	ArrayList<ArrayList<String>> putMove(int startx, int starty, int endx, int endy);
 	
 	ArrayList<ArrayList<String>> getBoard();
 	

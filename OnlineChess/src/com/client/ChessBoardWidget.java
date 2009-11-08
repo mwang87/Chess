@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class ChessBoardWidget extends Composite{
@@ -23,6 +24,7 @@ public class ChessBoardWidget extends Composite{
 	.create(GreetingService.class);
 	VerticalPanel widgetVPanel;
 	FlexTable flextable;
+	FlexTable moveListTable;
 	
 	HTML selectedSquareLabel;
 	ArrayList<ArrayList<BoardBox>> board2 = new ArrayList<ArrayList<BoardBox>>();
@@ -157,16 +159,20 @@ public class ChessBoardWidget extends Composite{
 							}
 						}
 						String serverTurn = result.get(8).get(0);
-						if(serverTurn.equals("Black")){
+						if(serverTurn.equals("Black"))
 							turn = true;
-						}
 						else
 							turn = false;
+						
+						ArrayList<String> moveList = result.get(9);
+						moveListTable.clear();
+						for(int i = 0 ; i < moveList.size(); i++){
+							moveListTable.setWidget(i,0,new HTML(moveList.get(i)));
+						}
 					}
 				});
 			}
 		};
-		
 		
 		t.scheduleRepeating(2000);
 	}
@@ -220,7 +226,7 @@ public class ChessBoardWidget extends Composite{
 		
 		
 		flextable = new FlexTable();
-		
+		moveListTable = new FlexTable();
 		//creating buttons for each table
 		for(int i = 0; i < 8; i++){
 			for(int j = 0; j < 8; j++){
@@ -242,7 +248,11 @@ public class ChessBoardWidget extends Composite{
 		
 		//Button testButton = new Button("ming");
 		widgetVPanel.add(resetButton);
-		widgetVPanel.add(flextable);
+		HorizontalPanel hPanel = new HorizontalPanel();
+		hPanel.add(flextable);
+		hPanel.add(moveListTable);
+		widgetVPanel.add(hPanel);
+		//widgetVPanel.add(flextable);
 		widgetVPanel.add(selectedSquareLabel);
 		
 		initWidget(widgetVPanel);
@@ -322,7 +332,7 @@ public class ChessBoardWidget extends Composite{
 			selectedSquareLabel.setHTML("You have moved: "+pieceString + " to " + destinationString);
 			turn = !turn;
 			
-			greetingService.greetServer(clickx, clicky, targetx, targety, new AsyncCallback<ArrayList<ArrayList<String>>>() {
+			greetingService.putMove(clickx, clicky, targetx, targety, new AsyncCallback<ArrayList<ArrayList<String>>>() {
 				public void onFailure(Throwable caught) {
 					//Window.alert("request failed");
 				}

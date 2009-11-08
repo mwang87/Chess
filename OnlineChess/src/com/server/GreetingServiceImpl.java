@@ -8,6 +8,7 @@ import javax.cache.CacheException;
 import javax.cache.CacheManager;
 
 import com.client.BoardBox;
+import com.client.ChessBoardWidget;
 import com.client.GreetingService;
 import com.client.MoveValidator;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -23,6 +24,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
 	//ArrayList<ArrayList<BoardBox>> board2 = null;
 	//boolean turn = false;
+	public static final String MoveListKey = "MoveList";
+	
 	
 	public ArrayList<ArrayList<BoardBox>> initboard2(){
 		ArrayList<ArrayList<BoardBox>> board2 = null;
@@ -102,6 +105,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		else
 			additionalParams.add("White");
 		returnVal.add(additionalParams);
+		ArrayList<String> moveList = getMoveList();
+		returnVal.add(moveList);
 		return returnVal;
 	}
 
@@ -155,10 +160,12 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		else
 			additionalParams.add("White");
 		returnVal.add(additionalParams);
+		
+		
 		return returnVal;
 	}
 	
-	public ArrayList<ArrayList<String>> greetServer(int startx, int starty, int endx, int endy) {
+	public ArrayList<ArrayList<String>> putMove(int startx, int starty, int endx, int endy) {
 		
 		ArrayList<ArrayList<BoardBox>> board2 = initboard2();
 
@@ -188,6 +195,18 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			turn = !turn;
 			setTurn(turn);
 			saveBoard(board2);
+			
+			//Saving move list, MoveListKey
+			ArrayList<String> moveList; 
+			if(isPresentCache(MoveListKey)){
+				moveList = (ArrayList<String>)getCached(MoveListKey);
+			}
+			else{
+				moveList = new ArrayList<String>();
+			}
+			String currentMove = getPieceString(endx, endy, board2) +" "+ getBoardBoxString(endx, endy);
+			moveList.add(currentMove);
+			putCached(MoveListKey, moveList);
 		}
 		
 		ArrayList<ArrayList<String>> returnVal = getSerializedBoard(board2);
@@ -206,6 +225,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			additionalParams.add("Black");
 		else
 			additionalParams.add("White");
+		
+		//insertMoveList(returnVal);
 		return returnVal;
 		
 	}
@@ -251,6 +272,14 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		return returnval;
 	}
 	
+	
+	public String getBoardBoxString(int x, int y){
+		char y_index = 'a';
+		y_index += y;
+		x = 8 - x;
+		String output = y_index+Integer.toString(x);
+		return output;
+	}
 	
 	
 	public boolean isPresentCache(String key){
@@ -307,6 +336,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		putCached("board", cacheboard);
 	}
 	
+	
+	
 	public BoardBox createBoardBox(String input){
 		if(input.length() == 0)
 			return new BoardBox(piecetype.EMPTY, color.BLACK);
@@ -331,6 +362,18 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			type = piecetype.QUEEN;
 		
 		return new BoardBox(type, myColor);
+	}
+	
+	public ArrayList<String> getMoveList(){
+		ArrayList<String> moveList;
+		if(isPresentCache(MoveListKey)){
+			moveList = (ArrayList<String>)getCached(MoveListKey);
+		}
+		else{
+			moveList = new ArrayList<String>();
+		}
+		
+		return moveList;
 	}
 	
 	
