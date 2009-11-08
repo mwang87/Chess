@@ -29,6 +29,7 @@ public class ChessBoardWidget extends Composite{
 	.create(GreetingService.class);
 	VerticalPanel widgetVPanel;
 	FlexTable flextable;
+	Image moveLoading = new Image("http://github.com/facebox/loading.gif");
 	Grid moveListTable;
 	
 	HTML selectedSquareLabel;
@@ -251,6 +252,9 @@ public class ChessBoardWidget extends Composite{
 	
 	public ChessBoardWidget(){
 		initBoard();
+		moveLoading.setVisible(false);
+		moveLoading.setSize("20px", "20px");
+		
 		widgetVPanel = new VerticalPanel();
 		Button resetButton = new Button("New Game");
 		TurnNotificaion = new HTML();
@@ -334,6 +338,7 @@ public class ChessBoardWidget extends Composite{
 		HorizontalPanel topPanel = new HorizontalPanel();
 		topPanel.add(resetButton);
 		topPanel.add(TurnNotificaion);
+		topPanel.add(moveLoading);
 		widgetVPanel.add(topPanel);
 		HorizontalPanel hPanel = new HorizontalPanel();
 		hPanel.add(flextable);
@@ -418,12 +423,13 @@ public class ChessBoardWidget extends Composite{
 			String pieceString = getPieceString(clickx, clicky);
 			selectedSquareLabel.setHTML("You have moved: "+pieceString + " to " + destinationString);
 			turn = !turn;
-			
+			moveLoading.setVisible(true);
 			greetingService.putMove(clickx, clicky, targetx, targety, new AsyncCallback<ArrayList<ArrayList<String>>>() {
 				public void onFailure(Throwable caught) {
 					//Window.alert("request failed");
 				}
 				public void onSuccess(ArrayList<ArrayList<String>> result) {
+					moveLoading.setVisible(false);
 					//seeing if user is logged in
 					if(result.get(0).get(0).equals("Login")){
 						//we are not logged in, redirect
