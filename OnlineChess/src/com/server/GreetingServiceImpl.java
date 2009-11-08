@@ -28,7 +28,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	//ArrayList<ArrayList<BoardBox>> board2 = null;
 	//boolean turn = false;
 	public static final String MoveListKey = "MoveList";
-	
+	public static final String MoveListUserKey = "MoveListUser";
 	
 	public ArrayList<ArrayList<BoardBox>> initboard2(){
 		ArrayList<ArrayList<BoardBox>> board2 = null;
@@ -109,7 +109,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			additionalParams.add("White");
 		returnVal.add(additionalParams);
 		ArrayList<String> moveList = getMoveList();
+		ArrayList<String> moveListUser = getMoveListUser(); 
 		returnVal.add(moveList);
+		returnVal.add(moveListUser);
 		return returnVal;
 	}
 
@@ -169,7 +171,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		saveBoard(board2);
 		setTurn(false);
 		ArrayList<String> moveList = new ArrayList<String>();
+		ArrayList<String> moveListUser = new ArrayList<String>();
 		putCached(MoveListKey, moveList);
+		putCached(MoveListUserKey, moveListUser);
 		ArrayList<ArrayList<String>> returnVal = getSerializedBoard(board2);
 		
 		ArrayList<String> additionalParams = new ArrayList<String>();
@@ -229,15 +233,25 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			saveBoard(board2);
 			
 			//Saving move list, MoveListKey
-			ArrayList<String> moveList; 
+			ArrayList<String> moveList;
+			ArrayList<String> moveListUser;
 			if(isPresentCache(MoveListKey)){
 				moveList = (ArrayList<String>)getCached(MoveListKey);
 			}
 			else{
 				moveList = new ArrayList<String>();
 			}
+			if(isPresentCache(MoveListUserKey)){
+				moveListUser = (ArrayList<String>)getCached(MoveListUserKey);
+			}
+			else{
+				moveListUser = new ArrayList<String>();
+			}
+			
 			String currentMove = getPieceString(endx, endy, board2) +" "+ getBoardBoxString(endx, endy);
 			moveList.add(currentMove);
+			moveListUser.add(getUserName());
+			putCached(MoveListUserKey, moveListUser);
 			putCached(MoveListKey, moveList);
 		}
 		
@@ -408,6 +422,18 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		return moveList;
 	}
 	
+	public ArrayList<String> getMoveListUser(){
+		ArrayList<String> moveList;
+		if(isPresentCache(MoveListUserKey)){
+			moveList = (ArrayList<String>)getCached(MoveListUserKey);
+		}
+		else{
+			moveList = new ArrayList<String>();
+		}
+		
+		return moveList;
+	}
+	
 	public boolean isLoggedIn(){
 		UserService userService = UserServiceFactory.getUserService();
 		User user = userService.getCurrentUser();
@@ -427,5 +453,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		String sourceURL = this.getServletContext().getContextPath();
 		return userService.createLoginURL(sourceURL);
 	}
+	
+	
 	
 }

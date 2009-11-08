@@ -17,6 +17,8 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.DecoratedPopupPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class ChessBoardWidget extends Composite{
 	
@@ -214,9 +216,27 @@ public class ChessBoardWidget extends Composite{
 						}
 						
 						ArrayList<String> moveList = result.get(9);
+						ArrayList<String> moveListUser = result.get(10);
 						moveListTable.clear();
 						for(int i = 0 ; i < moveList.size(); i++){
-							moveListTable.setWidget(i,0,new HTML(moveList.get(i)));
+							HTML text = new HTML(moveList.get(i));
+							text.setTitle("By "+moveListUser.get(i));
+							text.addClickHandler(new ClickHandler() {
+								
+								@Override
+								public void onClick(ClickEvent event) {
+									DecoratedPopupPanel popup = new DecoratedPopupPanel(true);
+									Widget source = (Widget) event.getSource();
+									setupPopup(popup, source.getTitle());
+						            int left = source.getAbsoluteLeft() + 10;
+						            int top = source.getAbsoluteTop() + 10;
+						            popup.setPopupPosition(left, top);
+
+						            // Show the popup
+						            popup.show();
+								}
+							});
+							moveListTable.setWidget(i,0,text);
 						}
 					}
 				});
@@ -465,6 +485,12 @@ public class ChessBoardWidget extends Composite{
 		return new BoardBox(type, myColor);
 	}
 	
+	
+	public void setupPopup(DecoratedPopupPanel widget, String inputString){
+		widget.ensureDebugId("cwBasicPopup-simplePopup");
+		widget.setWidth("150px");
+		widget.setWidget(new HTML(inputString));
+	}
 	
 	
 }
