@@ -253,7 +253,7 @@ public class ChessBoardWidget extends Composite{
 	public ChessBoardWidget(){
 		initBoard();
 		moveLoading.setVisible(false);
-		moveLoading.setSize("20px", "20px");
+		moveLoading.setSize("15px", "15px");
 		
 		widgetVPanel = new VerticalPanel();
 		Button resetButton = new Button("New Game");
