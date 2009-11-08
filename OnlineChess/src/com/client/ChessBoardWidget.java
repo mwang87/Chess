@@ -491,7 +491,7 @@ public class ChessBoardWidget extends Composite{
 	
 	public void setupPopup(DecoratedPopupPanel widget, String inputString){
 		widget.ensureDebugId("cwBasicPopup-simplePopup");
-		widget.setWidth("150px");
+		widget.setWidth("160px");
 		widget.setWidget(new HTML(inputString));
 	}
 	
